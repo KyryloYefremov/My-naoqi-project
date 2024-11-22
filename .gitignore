@@ -1,0 +1,5 @@
+/venv_py2
+/venv_py3
+/__pychache__
+
+*.pyc
