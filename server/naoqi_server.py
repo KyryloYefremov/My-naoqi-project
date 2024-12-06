@@ -3,7 +3,8 @@
 
 import socket
 import pickle
-from naoqi import ALProxy
+# from naoqi import ALProxy
+from proxy_service import ProxyService
 
 
 def convert_arg(arg):
@@ -28,6 +29,8 @@ def convert_arg(arg):
     return str(arg)
 
 
+proxy_service = ProxyService()
+
 HOST = '127.0.0.1'  # Localhost for communication
 PORT = 9559         # Port for listening to client commands
 
@@ -36,7 +39,6 @@ server_socket.bind((HOST, PORT))
 server_socket.listen(1)
 print("NAOqi server is running...")
 
-# TODO: fix a code problem of initialising new proxy connection to robot every time
 while True:
     conn, addr = server_socket.accept()
     print("\nConnected by", addr, "\n")
@@ -64,7 +66,8 @@ while True:
         print("args: ", args)
         print('============================\n')
 
-        proxy = ALProxy(module_name, ip, port)
+        proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
+        print(proxy_service.pool)
         
         # Execute the requested method
         result = getattr(proxy, method)(*args)
