@@ -1,8 +1,19 @@
 # -*- encoding: UTF-8 -*-
 
+import os
+import sys
+
+# Locate the config file dynamically
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, config_dir)
+
 ''' Whole Body Motion: Head orientation control '''
 ''' This example is only compatible with NAO '''
+
+# TODO: Fix problem with example test-head-motion.py
+
 from config import *
+
 import time
 import math
 from naoqi3 import ALProxy
