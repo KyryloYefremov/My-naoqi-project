@@ -3,7 +3,7 @@
 This project provides a Python 3-compatible wrapper for the NAOqi SDK, originally available only in Python 2. With this bridge, you can write code that communicates with NAO robots in Python 3, using the same syntax as NAOqi's original Python 2 library.
 
 ## Project Structure
-
+```shell
 my_naoqi_project/
 ├── server/                         # Server-side code (Python 2)
 │   ├── venv_py2/                   # Python 2 virtual environment
@@ -18,7 +18,7 @@ my_naoqi_project/
 │   └── requirements.txt            # Python 3 dependencies
 │
 └── README.md                       # Project documentation
-
+```
 
 ## How It Works
 
