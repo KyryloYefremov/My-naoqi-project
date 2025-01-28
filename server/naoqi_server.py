@@ -3,30 +3,25 @@
 
 import socket
 import pickle
+import ast 
 # from naoqi import ALProxy
 from proxy_service import ProxyService
 
 
 def convert_arg(arg):
-    """
-    Convert argument to its appropriate type.
-    """
     try:
-        # Try to convert to int
-        converted = int(arg)
-        return converted
-    except ValueError:
-        pass
-
-    try:
-        # Try to convert to float
-        converted = float(arg)
-        return converted
-    except ValueError:
-        pass
-
-    # If all else fails, return as string
-    return str(arg)
+        if isinstance(arg, unicode):
+            return str(arg)
+        if not isinstance(arg, str):
+            return arg
+        # try convert simple data types and container types (except `set()` and `frozen_set()`)
+        return ast.literal_eval(arg)
+    except ValueError as err:
+        # is thrown when `ast.literal_eval(arg)` is trying to convert string repr. of `set`.
+        if arg[0] == '{' or arg[0] == 's' or arg[0] == 'f':
+            return eval(arg)
+        
+        raise ValueError(err)
 
 
 proxy_service = ProxyService()
@@ -52,6 +47,7 @@ while True:
         module_name = str(command['module'])
         method = str(command['method'])
         args = []
+        print(command['args'])
         for arg in command['args']:
             args.append(convert_arg(arg))
         ip = str(command['ip'])
@@ -67,7 +63,7 @@ while True:
         print('============================\n')
 
         proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
-        print(proxy_service.pool)
+        # print(proxy_service.pool)
         
         # Execute the requested method
         result = getattr(proxy, method)(*args)
