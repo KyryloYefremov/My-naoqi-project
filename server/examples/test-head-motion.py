@@ -2,6 +2,14 @@
 
 ''' Whole Body Motion: Head orientation control '''
 ''' This example is only compatible with NAO '''
+# python 2
+import os
+import sys
+
+# Locate the config file dynamically
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, config_dir)
+
 from config import *
 import time
 import math
@@ -15,6 +23,7 @@ from naoqi import ALProxy
 
 motionProxy  = ALProxy("ALMotion", IP, PORT)
 postureProxy = ALProxy("ALRobotPosture", IP, PORT)
+tts = ALProxy("ALTextToSpeech", IP, PORT)
 
 # Wake up robot
 motionProxy.wakeUp()
@@ -52,10 +61,13 @@ targetCoordinateList = [
 # time.sleep allow head go to his target
 # The recommended minimum period between two successives set commands is
 # 0.2 s.
+i = 1
 for targetCoordinate in targetCoordinateList:
     targetCoordinate = [target*math.pi/180.0 for target in targetCoordinate]
     motionProxy.wbSetEffectorControl(effectorName, targetCoordinate)
+    tts.say(str(i))
     time.sleep(3.0)
+    i += 1
 
 # Deactivate Head tracking
 isEnabled = False
