@@ -10,7 +10,7 @@ from proxy_service import ProxyService
 
 def convert_arg(arg):
     try:
-        if isinstance(arg, unicode):
+        if isinstance(arg, unicode): # type: ignore
             return str(arg)
         if not isinstance(arg, str):
             return arg
@@ -34,7 +34,8 @@ server_socket.bind((HOST, PORT))
 server_socket.listen(1)
 print("NAOqi server is running...")
 
-while True:
+ACTIVE = True
+while ACTIVE:
     conn, addr = server_socket.accept()
     print("\nConnected by", addr, "\n")
 
@@ -76,6 +77,7 @@ while True:
     except KeyboardInterrupt:
         print("QUIT")
         conn.close()
+        ACTIVE = False
         exit(0)
     
     except Exception as e:
@@ -83,6 +85,7 @@ while True:
         error_response = pickle.dumps({'success': False, 'result': str(e)})
         conn.sendall(error_response)
         conn.close()
+        ACTIVE = False
         exit(1)
 
     finally:
