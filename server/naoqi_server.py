@@ -3,30 +3,28 @@
 
 import socket
 import pickle
-from naoqi import ALProxy
+import ast 
+# from naoqi import ALProxy
+from proxy_service import ProxyService
 
 
 def convert_arg(arg):
-    """
-    Convert argument to its appropriate type.
-    """
     try:
-        # Try to convert to int
-        converted = int(arg)
-        return converted
-    except ValueError:
-        pass
+        if isinstance(arg, unicode): # type: ignore
+            return str(arg)
+        if not isinstance(arg, str):
+            return arg
+        # try convert simple data types and container types (except `set()` and `frozen_set()`)
+        return ast.literal_eval(arg)
+    except ValueError as err:
+        # is thrown when `ast.literal_eval(arg)` is trying to convert string repr. of `set`.
+        if arg[0] == '{' or arg[0] == 's' or arg[0] == 'f':
+            return eval(arg)
+        
+        raise ValueError(err)
 
-    try:
-        # Try to convert to float
-        converted = float(arg)
-        return converted
-    except ValueError:
-        pass
 
-    # If all else fails, return as string
-    return str(arg)
-
+proxy_service = ProxyService()
 
 HOST = '127.0.0.1'  # Localhost for communication
 PORT = 9559         # Port for listening to client commands
@@ -36,8 +34,8 @@ server_socket.bind((HOST, PORT))
 server_socket.listen(1)
 print("NAOqi server is running...")
 
-# TODO: fix a code problem of initialising new proxy connection to robot every time
-while True:
+ACTIVE = True
+while ACTIVE:
     conn, addr = server_socket.accept()
     print("\nConnected by", addr, "\n")
 
@@ -50,6 +48,7 @@ while True:
         module_name = str(command['module'])
         method = str(command['method'])
         args = []
+        print(command['args'])
         for arg in command['args']:
             args.append(convert_arg(arg))
         ip = str(command['ip'])
@@ -64,7 +63,8 @@ while True:
         print("args: ", args)
         print('============================\n')
 
-        proxy = ALProxy(module_name, ip, port)
+        proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
+        # print(proxy_service.pool)
         
         # Execute the requested method
         result = getattr(proxy, method)(*args)
@@ -77,6 +77,7 @@ while True:
     except KeyboardInterrupt:
         print("QUIT")
         conn.close()
+        ACTIVE = False
         exit(0)
     
     except Exception as e:
@@ -84,6 +85,7 @@ while True:
         error_response = pickle.dumps({'success': False, 'result': str(e)})
         conn.sendall(error_response)
         conn.close()
+        ACTIVE = False
         exit(1)
 
     finally:
