@@ -30,6 +30,7 @@ resolution = vision_definitions.kQVGA  # 320x240
 colorSpace = vision_definitions.kBGRColorSpace  # RGB formát
 fps = 30
 
+camProxy.unsubscribe("python_GVM_0")
 nameId = camProxy.subscribe("python_GVM", resolution, colorSpace, fps)
 print("Subscribed with ID:", nameId)
 
@@ -39,7 +40,6 @@ for i in range(5):
     if image is None:
         print("Failed to get image", str(i))
         continue
-    
     width = image[0]
     height = image[1]
     array = np.frombuffer(image[6], dtype=np.uint8).reshape((height, width, 3))
