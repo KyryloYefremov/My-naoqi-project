@@ -80,7 +80,7 @@ while ACTIVE:
     
         # Always send a response
         response = pickle.dumps({'success': success, 'result': result}, protocol=2)
-        # Pošleme velikost dat jako 4 bajty (big-endian)
+        # Send the data size as 4 bytes (big-endian)
         conn.sendall(struct.pack('>I', len(response)))
         conn.sendall(response)
 

@@ -28,6 +28,8 @@ class ALProxyWrapper:
                 s.sendall(pickle.dumps(command, protocol=2))  # Use protocol 2 for Python 2 compatibility
 
                 # Receive the response
+
+                ### OLD SOLUTION ###
                 # response = s.recv(4096)
                 # result = pickle.loads(response)
                 # data = bytearray()
@@ -37,7 +39,7 @@ class ALProxyWrapper:
                 #     data.extend(response)
                 # result = pickle.loads(bytes(data))
 
-                # Přijetí velikosti dat (4 bajty)
+                # Receive the data size (4 bajty)
                 size_data = s.recv(4)
                 if len(size_data) < 4:
                     raise RuntimeError("Failed to receive data size")
@@ -46,16 +48,17 @@ class ALProxyWrapper:
                 print("Expecting", data_size, "bytes")
 
                 # Přijetí celé zprávy
-                data = b''
+                data = bytearray()
                 while len(data) < data_size:
-                    packet = s.recv(min(4096, data_size - len(data)))
+                    packet = s.recv(4096)
                     if not packet:
                         raise RuntimeError("Connection closed before all data was received")
-                    data += packet
-                    print(f"Data length: {len(data)}")
+                    data.extend(packet)
 
                 print("Received", len(data), "bytes")
-                result = pickle.loads(data)
+                
+                # Deserialisation
+                result = pickle.loads(bytes(data))
                 print(f"RESULT: {result}\n\n")
                 
                 # Check if the response contains an error
