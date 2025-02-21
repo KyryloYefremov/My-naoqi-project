@@ -31,7 +31,7 @@ def generate_message():
     image_data = random.choice([
         bytearray(),  # Prázdný array
         bytearray([random.randint(0, 255) for _ in range(width * height * layers)]),  # Normální data
-        bytearray([0x00, 0x99, 0xFF, 0x00, 0x99, 0xFF]),  # Obsahující problematické bajty (např. 0x99)
+        bytearray([0x00, 0xee, 0xFF, 0x00, 0x99, 0xFF]),  # Obsahující problematické bajty (např. 0x99)
         None  # None jako okrajový případ
     ])
 
@@ -75,8 +75,7 @@ def main():
     print("Connected by", addr)
 
     message = generate_message()
-    # message = bytearray([0x01, 0x02, 0x99, 0x03, 0x04])
-    data = pickle.dumps({'success': True, 'result': message}, protocol=2)  # Používáme protocol=2 kvůli kompatibilitě
+    data = pickle.dumps({'success': True, 'result': message})
 
     conn.sendall(struct.pack('>I', len(data)))  # Posíláme velikost dat
     conn.sendall(data)  # Posíláme samotná data
