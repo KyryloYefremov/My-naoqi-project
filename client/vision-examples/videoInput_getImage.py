@@ -6,13 +6,14 @@ import sys
 # Locate the config file dynamically
 config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, config_dir)
+os.system('cls')
 
 # This is just an example script that shows how images can be accessed
 # through ALVideoDevice in python.
 # Nothing interesting is done with the images in this example.
 
-import numpy as np
-import cv2
+import numpy as np # type: ignore
+import cv2 # type: ignore
 from config import *
 from naoqi3 import ALProxy
 import vision_definitions
@@ -43,7 +44,9 @@ for i in range(5):
     
     width = image[0]
     height = image[1]
-    array = np.frombuffer(image[6], dtype=np.uint8).reshape((height, width, 3))
+    # TODO: TO FIX: the convertion from string to bytes: `bytes(image[6], encoding='latin1')` should not be done here, 
+    # but inside of naoqi3 library. 
+    array = np.frombuffer(bytes(image[6], encoding='latin1'), dtype=np.uint8).reshape((height, width, 3))
     
     image_path = os.path.join(image_folder, "image_" + str(i) + ".png")
     cv2.imwrite(image_path, array)
