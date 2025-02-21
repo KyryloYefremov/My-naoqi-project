@@ -1,6 +1,9 @@
 # -*- encoding: UTF-8 -*-
 # naoqi_server.py (Python 2)
 
+import os
+os.system('cls')
+
 import socket
 import pickle
 import struct
