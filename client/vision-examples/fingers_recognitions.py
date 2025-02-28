@@ -88,12 +88,13 @@ if __name__ == "__main__":
         if frame is None:
             print("Nepodařilo se získat snímek.")
             continue
+    
+        fingers = count_fingers(frame)
+
         # save img 
-        image_path = os.path.join(image_folder, "image_finrec" + str(i) + ".png")
+        image_path = os.path.join(image_folder, str(i).zfill(3) + "image_" + str(fingers) + "fingers" + ".png")
         cv2.imwrite(image_path, frame)
         print("Saved: ", image_path)
-
-        fingers = count_fingers(frame)
 
         # TODO: try to implement this
         # results = count_fingers(frame)
