@@ -10,7 +10,8 @@ import sys
 import time
 import numpy as np
 import cv2
-# import mediapipe as mp
+
+from computer_vision import HandDetector
 from naoqi3 import ALProxy
 
 import vision_definitions
@@ -37,38 +38,16 @@ def get_image(cam_proxy):
     return array
 
 def count_fingers(image):
-    """
-    Detekuje ruku a spočítá zvednuté prsty pomocí konvexních defektů.
-    """
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (35, 35), 0)
-    _, thresh = cv2.threshold(blurred, 50, 255, cv2.THRESH_BINARY)
+    processed_img = hand_detector.find_hands(image)
+    land_mark_list = hand_detector.find_position(processed_img, draw=False)
+    fingers_up = hand_detector.fingers_up()
 
-    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    if not contours:
-        return 0
+    if fingers_up is not None:
+        fingers_up_count = sum(fingers_up)
+    else:
+        fingers_up_count = 0
 
-    max_contour = max(contours, key=cv2.contourArea)
-    hull = cv2.convexHull(max_contour, returnPoints=False)
-
-    if len(hull) < 4:
-        return 0
-
-    defects = cv2.convexityDefects(max_contour, hull)
-    if defects is None:
-        return 0
-
-    finger_count = 0
-    for i in range(defects.shape[0]):
-        _, _, far_idx, depth = defects[i, 0]
-        if depth > 10000:  # Filtruje jen významné defekty (velikost ruky)
-            finger_count += 1
-
-    return min(finger_count, 5)  # Omezíme max počet prstů na 5
-
-# def count_fingers(image):
-#     result = mp_hands.Hands().process(image)
-#     return result
+    return fingers_up_count, processed_img
 
 
 if __name__ == "__main__":
@@ -76,12 +55,12 @@ if __name__ == "__main__":
     if not os.path.exists(image_folder):
         os.makedirs(image_folder)
 
-    # mp_hands = mp.solutions.hands
-    # mp_drawing = mp.solutions.drawing_utlis
-
+    # init
     cam_proxy = ALProxy("ALVideoDevice", IP, PORT)
     tts = ALProxy("ALTextToSpeech", IP, PORT)
+    hand_detector = HandDetector()
 
+    # get images from robot camera and count fingers
     i = 1
     while True:
         frame = get_image(cam_proxy)
@@ -89,21 +68,15 @@ if __name__ == "__main__":
             print("Nepodařilo se získat snímek.")
             continue
     
-        fingers = count_fingers(frame)
+        fingers, landmark_img = count_fingers(frame)
 
         # save img 
         image_path = os.path.join(image_folder, str(i).zfill(3) + "image_" + str(fingers) + "fingers" + ".png")
-        cv2.imwrite(image_path, frame)
+        cv2.imwrite(image_path, landmark_img)
         print("Saved: ", image_path)
 
-        # TODO: try to implement this
-        # results = count_fingers(frame)
-        # if results.multi_hand_landmarks:
-        #     for hand_landmarks in results.multi_hand_landmarks:
-        #         mp_drawing.draw_landmarks(frame, hand_landmarks, connections=mp_hands.HAND_CONNECTIONS)
-
-        # Řekne rozpoznaný počet prstů
+        # say fingers number
         tts.say("Vidim {} prstu.".format(fingers))
 
-        time.sleep(2)  # Počkej, než se další snímek zpracuje
+        time.sleep(2)  # sleep for a while
         i+=1
