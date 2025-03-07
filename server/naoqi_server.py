@@ -93,10 +93,7 @@ while ACTIVE:
         print("RESULT: ", type(result))
         # print('res:', result[:20])
         success = True
-
-        # TODO: fix a problem with image sending: problem occurs when we are trying to `pickle.loads()` response on client
-        # problem maybe in encoding 
-    
+        
         # Always send a response
         converted_result = convert_to_py3_compatible(result)
         response = pickle.dumps({
