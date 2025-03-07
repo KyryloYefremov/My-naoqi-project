@@ -47,8 +47,7 @@ class ALProxyWrapper:
                 
                 # Deserialisation
                 response = pickle.loads(data, encoding='latin1')
-                # Convert dictionary keys from bytes back to strings
-                response = {k.decode('utf-8') if isinstance(k, bytes) else k: v for k, v in response.items()}
+                response = self.restore_py2_types(response)
                 
                 # Check if the response contains an error
                 if not response['success']:
@@ -56,3 +55,18 @@ class ALProxyWrapper:
                 
                 return response['result']
         return wrapper
+    
+
+    def restore_py2_types(self, obj):
+        if isinstance(obj, dict) and '__type__' in obj:
+            if obj['__type__'] == 'bytes':
+                return obj['data'].encode('latin1')
+            elif obj['__type__'] == 'str':
+                return obj['data']
+            elif obj['__type__'] == 'unicode':
+                return obj['data']
+        elif isinstance(obj, list):
+            return [self.restore_py2_types(item) for item in obj]
+        elif isinstance(obj, dict):
+            return {k: self.restore_py2_types(v) for k, v in obj.items()}
+        return obj

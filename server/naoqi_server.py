@@ -26,6 +26,22 @@ def convert_arg(arg):
             return eval(arg)
         
         raise ValueError(err)
+    
+
+def convert_to_py3_compatible(obj):
+    if isinstance(obj, str):
+        try:
+            obj.decode('utf-8')
+            return {'__type__': 'unicode', 'data': obj.decode('utf-8')}
+        except UnicodeDecodeError:
+            return {'__type__': 'bytes', 'data': obj}
+    elif isinstance(obj, unicode):  # type: ignore
+        return {'__type__': 'str', 'data': obj}
+    elif isinstance(obj, (list, tuple)):
+        return [convert_to_py3_compatible(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {k: convert_to_py3_compatible(v) for k, v in obj.iteritems()}
+    return obj
 
 
 proxy_service = ProxyService()
@@ -82,7 +98,11 @@ while ACTIVE:
         # problem maybe in encoding 
     
         # Always send a response
-        response = pickle.dumps({'success': success, 'result': result}, protocol=2)
+        converted_result = convert_to_py3_compatible(result)
+        response = pickle.dumps({
+            'success': success, 
+            'result': converted_result
+            }, protocol=2)
         # Send the data size as 4 bytes (big-endian)
         conn.sendall(struct.pack('>I', len(response)))
         conn.sendall(response)
