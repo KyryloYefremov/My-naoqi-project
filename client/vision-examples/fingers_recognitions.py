@@ -20,9 +20,9 @@ from config import *
 
 def get_image(cam_proxy):
     """
-    Pošle požadavek na získání snímku z kamery NAO a vrátí jej jako OpenCV obrázek.
+    sends a request to get an image from the NAO camera
     """
-    image = cam_proxy.getImageRemote(nameId)
+    image = cam_proxy.getImageRemote(name_id)
 
     if image is None:
         return None
@@ -30,7 +30,7 @@ def get_image(cam_proxy):
     width = image[0]
     height = image[1]
     channels = image[2]
-    array = np.frombuffer(bytes(image[6], encoding='latin1'), dtype=np.uint8).reshape((height, width, channels))
+    array = np.frombuffer(image[6], dtype=np.uint8).reshape((height, width, channels))
     return array.copy()
 
 
@@ -56,11 +56,11 @@ if __name__ == "__main__":
     cam_proxy = ALProxy("ALVideoDevice", IP, PORT)
     tts = ALProxy("ALTextToSpeech", IP, PORT)
     hand_detector = HandDetector()
-
+    # define params for nao camera
     resolution = vision_definitions.kQVGA  # 320x240
     color_space = vision_definitions.kBGRColorSpace  # OpenCV používá BGR
-
-    nameId = cam_proxy.subscribe("python_GVM", resolution, color_space, 30)
+    # get string handle under which the module is known from ALVideoDevice
+    name_id: str = cam_proxy.subscribe("python_GVM", resolution, color_space, 30)
 
     try:
         # get images from robot camera and count fingers
@@ -71,13 +71,14 @@ if __name__ == "__main__":
                 continue
         
             fingers = count_fingers(frame)
-            cv2.putText(frame, f"Fingers up: {str(fingers)}", (50, 50),  cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 255), 1)
-
+            cv2.putText(frame, f"Fingers up: {str(fingers)}", (50, 50),  cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 255), 2)
             cv2.imshow('image', frame)
+            # wait for 'q' to quit
             if cv2.waitKey(1) & 0xff == ord('q'):
                 break
 
     except Exception as e:
         print(e)
     finally:
-        cam_proxy.unsubscribe(nameId)
+        # unsubscribe from module
+        cam_proxy.unsubscribe(name_id)

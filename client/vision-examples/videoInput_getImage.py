@@ -44,9 +44,8 @@ for i in range(5):
     
     width = image[0]
     height = image[1]
-    # TODO: TO FIX: the convertion from string to bytes: `bytes(image[6], encoding='latin1')` should not be done here, 
-    # but inside of naoqi3 library. 
-    array = np.frombuffer(bytes(image[6], encoding='latin1'), dtype=np.uint8).reshape((height, width, 3))
+    
+    array = np.frombuffer(image[6], dtype=np.uint8).reshape((height, width, 3))
     
     image_path = os.path.join(image_folder, "image_" + str(i) + ".png")
     cv2.imwrite(image_path, array)
