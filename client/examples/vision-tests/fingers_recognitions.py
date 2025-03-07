@@ -2,8 +2,7 @@ import os
 import sys
 
 # Locate the config file dynamically
-config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, config_dir)
+sys.path.insert(0, os.getcwd())
 os.system('cls')
 
 import sys
