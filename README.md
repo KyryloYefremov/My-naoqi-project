@@ -7,15 +7,23 @@ This project provides a Python 3-compatible wrapper for the NAOqi SDK, originall
 my_naoqi_project/
 ├── server/                         # Server-side code (Python 2)
 │   ├── venv_py2/                   # Python 2 virtual environment
+│   ├── examples                    # directory with test programs
+│   │   ├── basic-tests
+│   │   ├── vision-tests
+│   ├── config.py
 │   ├── naoqi_server.py             # Server to execute NAOqi commands
-│   └── requirements.txt            # Python 2 dependencies
+│   ├── proxy_service.py
+│   ├── vision_definitions.py
 │
 ├── client/                         # Client-side code (Python 3)
 │   ├── venv_py3/                   # Python 3 virtual environment
+│   └── requirements.txt            # Python 3 dependencies
+│   ├── examples                    # directory with test programs
+│   │   ├── basic-tests
+│   │   ├── vision-tests
 │   ├── naoqi3.py                   # Wrapper to emulate NAOqi in Python 3
 │   ├── naoqi_client.py             # Client to communicate with Python 2 server
-│   ├── main.py                     # Example usage in Python 3
-│   └── requirements.txt            # Python 3 dependencies
+│   ├── config.py
 │
 └── README.md                       # Project documentation
 ```
@@ -78,11 +86,11 @@ The server will start and listen for commands from the Python 3 client.
 ### 2. Run the Python 3 Client
 ```bash
 cd .\client\
-python main.py
+python example\basic-tests\program.py
 ```
 
 
-## Example Code
+<!-- ## Example Code
 In ```client/main.py```, you can see an example of how to use the ```ALProxy``` class in Python 3, similar to the Python 2 syntax.
 ```python
 # main.py (Python 3)
@@ -91,11 +99,11 @@ from naoqi3 import ALProxy
 IP = "192.168.1.1"  # Replace with your robot's IP address
 tts = ALProxy("ALTextToSpeech", IP, 9559)
 tts.say("Hello, world!")
-```
+``` -->
 
-### Explanation of the Code
+<!-- ### Explanation of the Code
 - ```ALProxy("ALTextToSpeech", IP, 9559)``` creates a proxy for the ```ALTextToSpeech``` module, using the same syntax as in Python 2.
-- ```tts.say("Hello, world!")``` sends the ```say``` command to the Python 2 server, which executes it via NAOqi and makes the robot speak.
+- ```tts.say("Hello, world!")``` sends the ```say``` command to the Python 2 server, which executes it via NAOqi and makes the robot speak. -->
 
 
 ## Technical Details
