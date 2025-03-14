@@ -3,7 +3,7 @@ import os
 import sys
 
 # Locate the config file dynamically
-sys.path.insert(os.getcwd())
+sys.path.insert(0, os.getcwd())
 
 from config import *
 from naoqi3 import ALProxy
