@@ -85,14 +85,24 @@ while ACTIVE:
         print("args: ", args)
         print('============================\n')
 
-        proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
-        # print(proxy_service.pool)
-        
-        # Execute the requested method
-        result = getattr(proxy, method)(*args)
-        print("RESULT: ", type(result))
-        # print('res:', result[:20])
-        success = True
+        # if the request is to import naoqi sdk constants from modules
+        if module_name == "CONSTANTS":
+            if method == "get_constants":
+                result = proxy_service.get_constants(*args)
+            elif method == "list_modules":
+                result = proxy_service.list_constant_modules()
+            else:
+                raise AttributeError(f"Unknown constant method: {method}")
+        # else perform method from naoqi library
+        else:
+            proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
+            # print(proxy_service.pool)
+            
+            # Execute the requested method
+            result = getattr(proxy, method)(*args)
+            print("RESULT: ", type(result))
+            # print('res:', result[:20])
+            success = True
         
         # Always send a response
         converted_result = convert_to_py3_compatible(result)
