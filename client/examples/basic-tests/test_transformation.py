@@ -36,7 +36,7 @@ def main():
     # Define effector and frame
     effector = "LArm"
     frame = motion.FRAME_TORSO
-    axis_mask = motion.AXIS_MASK_VEL  # AXIS_MASK_VEL (control position only)
+    axis_mask = motion.AXIS_MASK_VEL # (control position only)
     use_sensor_values = False
 
     # Get the current transform of the effector
