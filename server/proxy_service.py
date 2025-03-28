@@ -3,6 +3,7 @@ This module is used to track initialised ALProxy instances from naoqi.
 """
 
 from naoqi import ALProxy
+import types
 
 
 class ProxyService:
@@ -22,17 +23,19 @@ class ProxyService:
         return self.pool[key]
     
     def get_constants(self, module_name):
-        """Vrátí všechny konstanty z daného modulu"""
+        """Return all constants from naoqi modules"""
         module = self.constant_modules.get(module_name)
         if not module:
-            raise ValueError(f"Module {module_name} not found")
+            raise ValueError("Module " + module_name + " not found")
         
         return {
-            k: v for k, v in vars(module).items()
-            if k.isupper() and not callable(v)
+            name: value
+            for name, value in vars(module).items()
+            if not name.startswith('__')  # exclude special attributes
+            and not isinstance(value, (types.FunctionType, types.BuiltinFunctionType, type, types.ModuleType))  # exclude built-in funcs, types and so on.
         }
 
     def list_constant_modules(self):
-        """Vrátí seznam dostupných modulů s konstantami"""
+        """Return list of available constans from modules"""
         return list(self.constant_modules.keys())
     

@@ -19,6 +19,7 @@ class ConstantGenerator:
         
         # generate every module
         for module_name in modules:
+            print(">>>" + module_name)
             self.generate_module(module_name)
             
     def generate_module(self, module_name):
@@ -34,6 +35,6 @@ class ConstantGenerator:
 
 
 if __name__ == "__main__":
-    generator = ConstantGenerator()
+    generator = ConstantGenerator(os.getcwd())
     generator.generate_all()
     print("Constants generation completed!")
