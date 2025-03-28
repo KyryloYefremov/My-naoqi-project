@@ -7,3 +7,12 @@ class ALProxy:
 
     def __getattr__(self, method_name):
         return getattr(self._proxy, method_name)
+
+
+class ALBroker:
+    def __init__(self, name, ip, port, parent_ip, parent_port):
+        ...
+
+
+class ALModule:
+    pass
