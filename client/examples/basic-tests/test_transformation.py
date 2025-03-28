@@ -7,6 +7,7 @@ sys.path.insert(0, os.getcwd())
 import numpy as np  # type: ignore
 from scipy.spatial.transform import Rotation as R  # type: ignore
 from naoqi3 import ALProxy
+import motion
 from config import *
 
 def create_transform_matrix(translation, rotation):
@@ -34,13 +35,13 @@ def main():
 
     # Define effector and frame
     effector = "LArm"
-    frame = motion_proxy.FRAME_TORSO
-    axis_mask = 7  # AXIS_MASK_VEL (control position only)
+    frame = motion.FRAME_TORSO
+    axis_mask = motion.AXIS_MASK_VEL  # AXIS_MASK_VEL (control position only)
     use_sensor_values = False
 
     # Get the current transform of the effector
     current_tf = motion_proxy.getTransform(effector, frame, use_sensor_values)
-    print("Current Transform (as list):", current_tf)
+    #print("Current Transform (as list):", current_tf)
 
     # Convert the current transform to a 4x4 matrix
     current_matrix = np.array(current_tf).reshape(4, 4)
