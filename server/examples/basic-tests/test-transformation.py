@@ -35,10 +35,10 @@ useSensorValues = False
 
 path = []
 currentTf = motionProxy.getTransform(effector, frame, useSensorValues)  # v cem jsou ty jednotky?
-print type(currentTf) # type: ignore
+# print type(currentTf) # type: ignore
 targetTf  = almath.Transform(currentTf)
-print "\n\n\n" #type: ignore
-print type(targetTf) # type: ignore
+# print "\n\n\n" #type: ignore
+# print type(targetTf) # type: ignore
 targetTf.r1_c4 += 0.03 # x
 targetTf.r2_c4 += 0.03 # y
 
