@@ -6,5 +6,4 @@ class ALProxy:
         self._proxy = ALProxyWrapper(module_name, ip, port)
 
     def __getattr__(self, method_name):
-        # print(method_name)
         return getattr(self._proxy, method_name)
