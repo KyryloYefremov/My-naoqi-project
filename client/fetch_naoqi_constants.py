@@ -3,7 +3,6 @@ import os, sys
 from naoqi_client import ALProxyWrapper
 from config import *
 
-# TODO: test constant importing
 
 class ConstantGenerator:
     def __init__(self, output_dir=""):
