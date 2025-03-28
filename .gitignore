@@ -3,4 +3,8 @@
 /__pychache__
 .vscode
 
+# dynamic imported modules
+/client/motion.py
+/client/vision_definitions.py
+
 *.pyc
