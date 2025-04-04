@@ -22,6 +22,7 @@ from config import *
 HumanGreeter = None
 memory = None
 
+name = "HumanGreeter"
 
 class HumanGreeterModule(ALModule):
     """ A simple module able to react
@@ -40,7 +41,7 @@ class HumanGreeterModule(ALModule):
         global memory
         memory = ALProxy("ALMemory")
         memory.subscribeToEvent("FaceDetected",
-            "HumanGreeter",
+            name,
             "onFaceDetected")
 
     def onFaceDetected(self, *_args):
@@ -50,14 +51,13 @@ class HumanGreeterModule(ALModule):
         """
         # Unsubscribe to the event when talking,
         # to avoid repetitions
-        memory.unsubscribeToEvent("FaceDetected",
-            "HumanGreeter")
+        memory.unsubscribeToEvent("FaceDetected", name)
 
         self.tts.say("Ahoj kamarade!")
 
         # Subscribe again to the event
         memory.subscribeToEvent("FaceDetected",
-            "HumanGreeter",
+            name,
             "onFaceDetected")
 
 
@@ -71,12 +71,11 @@ def main():
        IP,         # parent broker IP
        PORT)       # parent broker port
 
-
     # Warning: HumanGreeter must be a global variable
     # The name given to the constructor must be the name of the
     # variable
     global HumanGreeter
-    HumanGreeter = HumanGreeterModule("HumanGreeter")
+    HumanGreeter = HumanGreeterModule(name)
 
     try:
         while True:
@@ -84,8 +83,12 @@ def main():
     except KeyboardInterrupt:
         print
         print "Interrupted by user, shutting down"  # type: ignore
-        myBroker.shutdown()
+
         sys.exit(0)
+    except Exception:
+        pass
+    finally:
+        myBroker.shutdown()
 
 
 
