@@ -9,9 +9,10 @@ from config import *
 from naoqi3 import ALProxy
 
 tts = ALProxy("ALTextToSpeech", IP, PORT)
-tts.say("Ahoj, jsem Nao.")
-tts.say("Ja jsem robot.")
-tts.say("Ja pracuju, aby lidi mohli vic relaxovat.")
 
-# motionProxy = ALProxy("ALMotion", IP, PORT)
-# motionProxy.rest()
+tts.setLanguage("Czech")
+tts.say("Ahoj, jsem Nao.")
+tts.setLanguage("English")
+tts.say("Hello, I am Nao.")
+tts.setLanguage("Czech")
+
