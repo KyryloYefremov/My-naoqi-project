@@ -4,12 +4,17 @@
 import os
 os.system('cls')
 
+import sys
 import socket
 import pickle
 import struct
 import ast 
-# from naoqi import ALProxy
+import signal
+
 from proxy_service import ProxyService
+
+
+INFO = "[I] "
 
 
 def convert_arg(arg):
@@ -44,104 +49,112 @@ def convert_to_py3_compatible(obj):
     return obj
 
 
-proxy_service = ProxyService()
+if __name__ == "__main__":
+    proxy_service = ProxyService()
 
-HOST = '127.0.0.1'  # Localhost for communication
-PORT = 9559         # Port for listening to client commands
+    HOST = '127.0.0.1'  # Localhost for communication
+    PORT = 9559         # Port for listening to client commands
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((HOST, PORT))
-server_socket.listen(1)
-for _ in range(4): print
-print("=" * 50)
-print("NAOqi server is running...\n")
+    # initialise socket connection
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((HOST, PORT))
+    server_socket.listen(1)
 
-ACTIVE = True
-while ACTIVE:
-    conn, addr = server_socket.accept()
-    print("\nConnected by", addr, "\n")
+    ###########################################
+    print "\n\n\n\n", "=" * 50                 # type: ignore
+    print INFO + "NAOqi server is running..."         # type: ignore
+    print INFO + HOST + ":" + str(PORT)               # type: ignore
+    print "=" * 50, "\n\n"                     # type: ignore
+    ###########################################
 
-    try:
-        data = conn.recv(4096)
-        if not data:
-            raise ValueError("Received empty data from client")
+    ACTIVE = True
+    while ACTIVE:
+        conn, addr = server_socket.accept()
+        print INFO + "Connected by: " + str(addr)  # type: ignore
 
-        command = pickle.loads(data)
-        module_name = str(command['module'])
-        method = str(command['method'])
-        args = []
-        # print(command['args'])
-        for arg in command['args']:
-            args.append(convert_arg(arg))
-        ip = str(command.get('ip'))
-        port = command.get('port')
-        
-        print(command)
-        # print('============================')
-        # print("ip: ", ip)
-        # print("port: ", port)
-        # print("module_name: ", module_name)
-        # print("method: ", method)
-        # print("args: ", args)
-        # print('============================\n')
-
-        # if the request is to import naoqi sdk constants from modules
-        if module_name == "CONSTANTS":
-            if method == "get_constants":
-                result = proxy_service.get_constants(*args)                
-            elif method == "list_modules":
-                result = proxy_service.list_constant_modules()    
-                print(proxy_service.constant_modules)            
-            else:
-                raise AttributeError("Unknown constant method: " + method)
-        elif module_name == "ALBroker":
-            result = proxy_service.handle_broker_command(
-                method, 
-                ip, 
-                port, 
-                command['name'] ,
-                command['parent_ip'],
-                command['parent_port'],
-                args
-            )
-        # else perform method from naoqi library
-        else:
-            result = proxy_service.handle_proxy_command(
-                module_name=module_name,
-                method=method,
-                ip=ip,
-                port=port,
-                args=args
-            )
+        try:
+            data = conn.recv(4096)
+            if not data:
+                raise ValueError("Received empty data from client")
             
-            print("RESULT: ", type(result))
+            # unpack received data and save them to variables
+            command = pickle.loads(data)
+            module_name = str(command['module'])
+            method = str(command['method'])
+            args = []
+            for arg in command['args']:
+                args.append(convert_arg(arg))
+            ip = str(command.get('ip'))
+            port = command.get('port')
+            
+            #############################################
+            print INFO + "Received command from client: " # type: ignore
+            print "\tip:          ", ip                   # type: ignore
+            print "\tport:        ", port                 # type: ignore 
+            print "\tmodule_name: ", module_name          # type: ignore
+            print "\tmethod:      ", method               # type: ignore
+            print "\targs:        ", args                 # type: ignore
+            print
+            #############################################
 
-        # if we are here - the code was executed correctly - successfully
-        success = True
+            # if the request is to import naoqi sdk constants from modules
+            if module_name == "CONSTANTS":
+                if method == "get_constants":
+                    result = proxy_service.get_constants(*args)                
+                elif method == "list_modules":
+                    result = proxy_service.list_constant_modules()    
+                    print(proxy_service.constant_modules)            
+                else:
+                    raise AttributeError("Unknown constant method: " + method)
+            # if the request is targeting ALBroker module
+            elif module_name == "ALBroker":
+                result = proxy_service.handle_broker_command(
+                    method, 
+                    ip, 
+                    port, 
+                    command['name'] ,
+                    command['parent_ip'],
+                    command['parent_port'],
+                    args
+                )
+            # else perform method from naoqi library
+            else:
+                result = proxy_service.handle_proxy_command(
+                    module_name=module_name,
+                    method=method,
+                    ip=ip,
+                    port=port,
+                    args=args
+                )
+                
+            print "\n"+INFO, "RESULT: ", type(result), "\n"  # type: ignore
+
+            # if we are here - the code was executed correctly - successfully
+            success = True
+            
+            # Always send a response
+            converted_result = convert_to_py3_compatible(result)
+            response = pickle.dumps({
+                'success': success, 
+                'result': converted_result
+                }, protocol=2)
+            # Send the data size as 4 bytes (big-endian)
+            conn.sendall(struct.pack('>I', len(response)))
+            conn.sendall(response)
+
+        except KeyboardInterrupt:
+            print("QUIT")
+            conn.close()
+            ACTIVE = False
+            exit(0)
         
-        # Always send a response
-        converted_result = convert_to_py3_compatible(result)
-        response = pickle.dumps({
-            'success': success, 
-            'result': converted_result
-            }, protocol=2)
-        # Send the data size as 4 bytes (big-endian)
-        conn.sendall(struct.pack('>I', len(response)))
-        conn.sendall(response)
+        except Exception as e:
+            print("Error:", e)
+            error_response = pickle.dumps({'success': False, 'result': e}, protocol=2)
+            conn.sendall(error_response)
+            conn.close()
+            ACTIVE = False
+            exit(1)
 
-    except KeyboardInterrupt:
-        print("QUIT")
-        conn.close()
-        ACTIVE = False
-        exit(0)
-    
-    except Exception as e:
-        print("Error:", e)
-        error_response = pickle.dumps({'success': False, 'result': e}, protocol=2)
-        conn.sendall(error_response)
-        conn.close()
-        ACTIVE = False
-        exit(1)
-
-    finally:
-        conn.close()
+        finally:
+            conn.close()
