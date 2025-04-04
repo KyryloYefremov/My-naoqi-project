@@ -70,20 +70,20 @@ while ACTIVE:
         module_name = str(command['module'])
         method = str(command['method'])
         args = []
-        print(command['args'])
+        # print(command['args'])
         for arg in command['args']:
             args.append(convert_arg(arg))
-        ip = str(command['ip'])
-        port = command['port']
+        ip = str(command.get('ip'))
+        port = command.get('port')
         
-        # print(command)
-        print('============================')
-        print("ip: ", ip)
-        print("port: ", port)
-        print("module_name: ", module_name)
-        print("method: ", method)
-        print("args: ", args)
-        print('============================\n')
+        print(command)
+        # print('============================')
+        # print("ip: ", ip)
+        # print("port: ", port)
+        # print("module_name: ", module_name)
+        # print("method: ", method)
+        # print("args: ", args)
+        # print('============================\n')
 
         # if the request is to import naoqi sdk constants from modules
         if module_name == "CONSTANTS":
@@ -94,15 +94,28 @@ while ACTIVE:
                 print(proxy_service.constant_modules)            
             else:
                 raise AttributeError("Unknown constant method: " + method)
+        elif module_name == "ALBroker":
+            result = proxy_service.handle_broker_command(
+                method, 
+                ip, 
+                port, 
+                command['name'] ,
+                command['parent_ip'],
+                command['parent_port'],
+                args
+            )
         # else perform method from naoqi library
         else:
-            proxy = proxy_service.get_proxy(module_name=module_name, ip=ip, port=port)
-            # print(proxy_service.pool)
+            module_name, method, ip, port, args
+            result = proxy_service.handle_proxy_command(
+                module_name=module_name,
+                method=method,
+                ip=ip,
+                port=port,
+                args=args
+            )
             
-            # Execute the requested method
-            result = getattr(proxy, method)(*args)
             print("RESULT: ", type(result))
-            # print('res:', result[:20])
 
         # if we are here - the code was executed correctly - successfully
         success = True
