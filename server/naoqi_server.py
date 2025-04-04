@@ -106,7 +106,6 @@ while ACTIVE:
             )
         # else perform method from naoqi library
         else:
-            module_name, method, ip, port, args
             result = proxy_service.handle_proxy_command(
                 module_name=module_name,
                 method=method,
