@@ -13,7 +13,7 @@ tts    = ALProxy("ALTextToSpeech", IP, PORT)
 
 motion.wakeUp()
 motion.moveInit()
-# TODO: fix problem with this line of code
+
 motion.post.moveTo(0.5, 0, 0)
 tts.say("Ja jdu nekam, hodne, hodne daleko. A nikdo me nenajde.")
 
