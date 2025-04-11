@@ -32,7 +32,7 @@ class SubProxy:
             'ip': self.parent.ip,
             'port': self.parent.port
         }
-        print(f'COMMAND: \n{command}\n\n')
+        # print(f'COMMAND: \n{command}\n\n')
         return send_request(command)
     
 
@@ -57,7 +57,7 @@ class ALBrokerWrapper:
                 'parent_port': self.parent_port
             }
             
-            print(f'COMMAND: \n{command}\n\n')
+            # print(f'COMMAND: \n{command}\n\n')
             return send_request(command)
         return wrapper
     
