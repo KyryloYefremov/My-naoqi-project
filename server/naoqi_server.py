@@ -9,28 +9,46 @@ import socket
 import pickle
 import struct
 import ast 
-import signal
 
 from proxy_service import ProxyService
 
-
 INFO = "[I] "
+ERROR = "[E] "
 
 
-def convert_arg(arg):
+def convert_arg(obj):
+    """Recursively convert Unicode strings and evaluate string representations"""
     try:
-        if isinstance(arg, unicode): # type: ignore
-            return str(arg)
-        if not isinstance(arg, str):
-            return arg
-        # try convert simple data types and container types (except `set()` and `frozen_set()`)
-        return ast.literal_eval(arg)
-    except ValueError as err:
-        # is thrown when `ast.literal_eval(arg)` is trying to convert string repr. of `set`.
-        if arg[0] == '{' or arg[0] == 's' or arg[0] == 'f':
-            return eval(arg)
+        # Handle containers recursively
+        if isinstance(obj, list):
+            return [convert_arg(item) for item in obj]
+        if isinstance(obj, tuple):
+            return tuple(convert_arg(item) for item in obj)
+        if isinstance(obj, dict):
+            return {convert_arg(k): convert_arg(v) for k, v in obj.items()}
+            
+        # Handle Unicode strings (Python 2 compatibility)
+        if isinstance(obj, unicode):  # type: ignore
+            return str(obj)
+            
+        # Handle string representations of other types
+        if isinstance(obj, str):
+            try:
+                # First try literal evaluation
+                converted = ast.literal_eval(obj)
+                return convert_arg(converted)  # Recursively handle converted objects
+            except (ValueError, SyntaxError):
+                # Fallback for special cases like 'set()'
+                if obj.startswith(('{', '[', '(', 'set', 'frozenset')):
+                    return eval(obj)
+                return obj
+                
+        # Return all other types as-is
+        return obj
         
-        raise ValueError(err)
+    except Exception as e:
+        print ERROR + "Conversion error: " + e  # type: ignore
+        return obj
     
 
 def convert_to_py3_compatible(obj):
@@ -81,9 +99,7 @@ if __name__ == "__main__":
             command = pickle.loads(data)
             module_name = str(command['module'])
             method = str(command['method'])
-            args = []
-            for arg in command['args']:
-                args.append(convert_arg(arg))
+            args = convert_arg(command['args'])  # process entire structure at once
             ip = str(command.get('ip'))
             port = command.get('port')
             
