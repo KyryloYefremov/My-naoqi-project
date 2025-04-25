@@ -11,8 +11,8 @@ from naoqi3 import ALProxy
 tts = ALProxy("ALTextToSpeech", IP, PORT)
 
 tts.setLanguage("Czech")
-tts.say("Ahoj, jsem Nao.")
+tts.say("Ahoj kamaráde, jsem Nao. Umím všechna česká písmena.")
 tts.setLanguage("English")
-tts.say("Hello, I am Nao.")
+tts.say("Hello, I am Nao. I can speak English as well.")
 tts.setLanguage("Czech")
 
