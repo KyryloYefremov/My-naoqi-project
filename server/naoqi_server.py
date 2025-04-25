@@ -12,43 +12,46 @@ import ast
 
 from proxy_service import ProxyService
 
-INFO = "[I] "
+INFO  = "[I] "
 ERROR = "[E] "
 
 
 def convert_arg(obj):
     """Recursively convert Unicode strings and evaluate string representations"""
-    try:
-        # Handle containers recursively
-        if isinstance(obj, list):
-            return [convert_arg(item) for item in obj]
-        if isinstance(obj, tuple):
-            return tuple(convert_arg(item) for item in obj)
-        if isinstance(obj, dict):
-            return {convert_arg(k): convert_arg(v) for k, v in obj.items()}
-            
-        # Handle Unicode strings (Python 2 compatibility)
-        if isinstance(obj, unicode):  # type: ignore
-            return str(obj)
-            
-        # Handle string representations of other types
-        if isinstance(obj, str):
-            try:
-                # First try literal evaluation
-                converted = ast.literal_eval(obj)
-                return convert_arg(converted)  # Recursively handle converted objects
-            except (ValueError, SyntaxError):
-                # Fallback for special cases like 'set()'
-                if obj.startswith(('{', '[', '(', 'set', 'frozenset')):
-                    return eval(obj)
-                return obj
-                
-        # Return all other types as-is
-        return obj
+    # try:
+    # Handle containers recursively
+    if isinstance(obj, list):
+        return [convert_arg(item) for item in obj]
+    if isinstance(obj, tuple):
+        return tuple(convert_arg(item) for item in obj)
+    if isinstance(obj, dict):
+        return {convert_arg(k): convert_arg(v) for k, v in obj.items()}
         
-    except Exception as e:
-        print ERROR + "Conversion error: " + e  # type: ignore
-        return obj
+    # Handle Unicode strings (Python 2 compatibility)
+    if isinstance(obj, unicode):  # type: ignore
+        try:
+            return str(obj)
+        except UnicodeEncodeError:
+            return obj.encode('utf-8')
+        
+    # Handle string representations of other types
+    if isinstance(obj, str):
+        try:
+            # First try literal evaluation
+            converted = ast.literal_eval(obj)
+            return convert_arg(converted)  # Recursively handle converted objects
+        except (ValueError, SyntaxError):
+            # Fallback for special cases like 'set()'
+            if obj.startswith(('{', '[', '(', 'set', 'frozenset')):
+                return eval(obj)
+            return obj
+            
+    # Return all other types as-is
+    return obj
+        
+    # except Exception as e:
+    #     # print ERROR + "Conversion error: " + str(e)  # type: ignore
+    #     raise # Re-raise the exception for further handling
     
 
 def convert_to_py3_compatible(obj):
@@ -159,18 +162,18 @@ if __name__ == "__main__":
             conn.sendall(response)
 
         except KeyboardInterrupt:
-            print("QUIT")
+            print "QUIT" # type: ignore
             conn.close()
             ACTIVE = False
             exit(0)
         
         except Exception as e:
-            print("Error:", e)
-            error_response = pickle.dumps({'success': False, 'result': e}, protocol=2)
+            print ERROR  # type: ignore
+            error_response = pickle.dumps({'success': False, 'result': str(e)}, protocol=2)
+            conn.sendall(struct.pack('>I', len(error_response)))
             conn.sendall(error_response)
-            conn.close()
             ACTIVE = False
-            exit(1)
+            raise  # Re-raise the exception for further handling
 
         finally:
             conn.close()
