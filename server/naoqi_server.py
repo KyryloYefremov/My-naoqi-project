@@ -14,6 +14,7 @@ from proxy_service import ProxyService
 
 INFO  = "[I] "
 ERROR = "[E] "
+QUIT =  "[Q] "
 
 
 def convert_arg(obj):
@@ -89,11 +90,16 @@ if __name__ == "__main__":
     ###########################################
 
     ACTIVE = True
+    server_socket.settimeout(1.0)  # Set a timeout for the socket operations
     while ACTIVE:
-        conn, addr = server_socket.accept()
-        print INFO + "Connected by: " + str(addr)  # type: ignore
-
         try:
+            try:
+                conn, addr = server_socket.accept()
+                print INFO + "Connected by: " + str(addr)  # type: ignore
+            except socket.timeout:
+                # If no connection is established, continue the loop
+                continue
+
             data = conn.recv(4096)
             if not data:
                 raise ValueError("Received empty data from client")
@@ -160,10 +166,10 @@ if __name__ == "__main__":
             # Send the data size as 4 bytes (big-endian)
             conn.sendall(struct.pack('>I', len(response)))
             conn.sendall(response)
+            conn.close()
 
         except KeyboardInterrupt:
-            print "QUIT" # type: ignore
-            conn.close()
+            print QUIT + "Server was stopped by user.\n" # type: ignore
             ACTIVE = False
             exit(0)
         
@@ -172,8 +178,7 @@ if __name__ == "__main__":
             error_response = pickle.dumps({'success': False, 'result': str(e)}, protocol=2)
             conn.sendall(struct.pack('>I', len(error_response)))
             conn.sendall(error_response)
+            conn.close()
             ACTIVE = False
             raise  # Re-raise the exception for further handling
 
-        finally:
-            conn.close()
