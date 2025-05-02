@@ -1,0 +1,28 @@
+
+1. test_get_values.py
+NAOqi : 15.135 | 14.114 | 14.172
+NAOqi3: 14.222 | 13.852 | 13.760
+
+2. test_say_hello.py
+NAOqi : 10.286 | 10.345 | 10.060
+NAOqi3: 10.339 | 10.385 | 10.248
+
+3. almotion_arm1.py
+NAOqi : 13.243 | 13.254 | 13.256
+NAOqi3: 14.047 | 14.611 | 14.377
+
+4. almotion_hulahoop.py
+NAOqi : 13.813 | 13.805 | 13.811
+NAOqi3: 14.161 | 14.068 | 14.127
+
+5. almotion_collision_detection.py
+NAOqi : 23.458 | 23.446 | 23.444
+NAOqi3: 26.337 | 24.909 | 24.991
+
+6. sensors_sonar.py
+NAOqi : 0.507 | 0.494 | 0.506
+NAOqi3: 0.653 | 0.752 | 0.610
+
+7. get_images_from_camera.py
+NAOqi : 0.866 | 0.832 | 0.925
+NAOqi3: 0.770 | 0.756 | 0.721
