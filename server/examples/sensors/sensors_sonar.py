@@ -7,6 +7,7 @@ sys.path.insert(0, os.getcwd())
 
 from config import *
 from naoqi import ALProxy
+import time
 
 
 def main():
@@ -47,4 +48,7 @@ def main():
 
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))

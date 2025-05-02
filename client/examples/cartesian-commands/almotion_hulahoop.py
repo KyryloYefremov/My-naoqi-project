@@ -14,6 +14,7 @@ from scipy.spatial.transform import Rotation as R
 from naoqi3 import ALProxy
 import motion
 from config import *
+import time
 
 def create_transform(translation=None, rotation=None):
     """Create 4x4 transform matrix from translation and/or rotation"""
@@ -79,4 +80,7 @@ def main():
     motion_proxy.rest()
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))

@@ -13,6 +13,7 @@ import motion
 import almath
 from naoqi import ALProxy
 from config import *
+import time
 
 
 def main():
@@ -100,4 +101,7 @@ def main():
     # end script
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))

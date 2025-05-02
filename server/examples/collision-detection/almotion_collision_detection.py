@@ -14,6 +14,7 @@ from config import *
 import almath
 import time
 from naoqi import ALProxy
+import time
 
 def moveArm(motionProxy, pTarget, pRobotName, pChainName):
     ''' Function to make NAO bump on his Torso or Head with his arm '''
@@ -166,4 +167,7 @@ def main():
     motionProxy.rest()
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))

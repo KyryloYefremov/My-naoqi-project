@@ -16,11 +16,14 @@ import cv2 # type: ignore
 from config import *
 from naoqi3 import ALProxy
 import vision_definitions
+import time
 
 # Vytvoření složky pro ukládání obrázků
-image_folder = "vision-examples\images"
+image_folder = "examples\\vision-tests\images"
 if not os.path.exists(image_folder):
     os.makedirs(image_folder)
+
+start = time.time()
 
 print("Creating ALVideoDevice proxy to", IP)
 camProxy = ALProxy("ALVideoDevice", IP, PORT)
@@ -52,3 +55,6 @@ for i in range(5):
 
 camProxy.unsubscribe(nameId)
 print("End of script")
+
+end = time.time()
+print("Execution time: {:.3f} seconds".format(end - start))

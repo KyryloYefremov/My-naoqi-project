@@ -11,6 +11,7 @@ from config import *
 import time
 import math
 from naoqi3 import ALProxy
+import time
 
 
 def move_arm(motion_proxy, target, robot_name, chain_name):
@@ -105,4 +106,7 @@ def main():
     motion_proxy.rest()
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))

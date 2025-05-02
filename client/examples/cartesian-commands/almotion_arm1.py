@@ -14,6 +14,7 @@ sys.path.insert(0, os.getcwd())
 import motion
 from naoqi3 import ALProxy
 from config import *
+import time
 
 
 def transform_to_vector(translation, rotation):
@@ -68,4 +69,7 @@ def main():
     motionProxy.rest()
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print("Execution time: {:.3f} seconds".format(end - start))
