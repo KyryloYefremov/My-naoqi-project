@@ -1,5 +1,11 @@
 /venv_py2
 /venv_py3
 /__pychache__
+.vscode
+
+# dynamic imported modules
+/client/motion.py
+/client/vision_definitions.py
 
 *.pyc
+.DS_Store
