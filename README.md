@@ -2,6 +2,22 @@
 
 This project provides a Python 3-compatible wrapper for the NAOqi SDK, originally available only in Python 2. With this bridge, you can write code that communicates with NAO robots in Python 3, using the same syntax as NAOqi's original Python 2 library.
 
+## Table of Contents
+
+1. [Project Structure](#project-structure)
+2. [Compatibility](#compatibility)
+3. [Main Components](#main-components)
+4. [Instalation guide](#instalation-guide)
+   1. [Step 1: Install Python 3 if not installed](#step-1-install-python-3-if-not-installed)
+   2. [Step 2: Install Python 2.7.18 required](#step-2-install-python-2718-required)
+   3. [Step 3: install NAOqi SDK 2.1.4 and add it to Python global dependencies required](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
+   4. [Step 4: Setup first project and install NAOqi3 required](#step-4-setup-first-project-and-install-naoqi3-required)
+5. [Technical Details](#technical-details)
+   1. [Server Python 2](#server-python-2)
+   2. [Client Python 3](#client-python-3)
+   3. [Communication Protocol](#communication-protocol)
+
+
 ## Project Structure
 ```shell
 project_root/
