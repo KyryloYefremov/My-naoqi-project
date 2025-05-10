@@ -167,6 +167,17 @@ tts.say("Hello World!")
 
 **In such simple way you can run any Python 3 program you want!**
 
+### Generate constants
+
+NAOqi3 also implements an opportunity to dynamically generate all files with specific NAOqi original constants for this particular NAOqi SDK that you are using. Basically, it means that original NAOqi SDK contains some Python files (for example `motion.py`), that store specific constants that are used in vision configurations, motion configurations and so on. These files with constants can differ from NAOqi version 2.1.4 to version 2.8.6 for example. So all you need is just to generate these files once manually and you will be able to use it in your future programs! <br>
+
+**The proces is very simple**:
+1. Open a terminal in `client\` folder.
+2. Then run: `python fetch_naoqi_constants.py`
+3. And there will be two constants file generated (for NAOqi 2.1.4): `motion.py` and `vision_definitions.py`.
+
+**You have successfully generated files with constants from original NAOqi SDK!**
+
 ## Functionality description
 
 ### Project Structure
