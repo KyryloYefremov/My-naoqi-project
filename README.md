@@ -42,7 +42,7 @@ This table shows with which NAO and NAOqi SDK this bridge interface is compatibl
 |-------------|-------------------|------------|
 | NAO V4      | *NAOqi* 2.1.4     |     ✅     |
 | NAO V5      | *NAOqi* 2.1.4     |     ✅     |
-| NAO V6      | *NAOqi* 2.8.6+    |     ✅     |
+| NAO V6      | *NAOqi* 2.8.6     |     ✅     |
 
 
 ## Technical Details
@@ -152,3 +152,5 @@ This part will describe how to create new project in PyCharm, clone NAOqi3 from 
 After successfully installing and launching NAOqi3, you can remove all `examples\` folders (both in `server\` and `client\`) or leave it for inspiration. All files you actually require are: `client\naoqi_client.py`, `client\fetch_naoqi_constants.py`, `client\config.py` (to have NAO configs stored), `client\naoqi3.py`, `server\naoqi_server.py`, `server\proxy_service.py`.
 
 ## FAQ
+**_I have already installed Python 3.9, will NAOqi3 work with this version?_** <br>
+Yes, the NAOqi3 will work on any Python 3 version, but if you want to use existing examples from this repository (for example `final-program\`), consider using the same Python version (3.11.0) that was used for developing this program.
