@@ -1,6 +1,12 @@
+import os
+import sys
+
+# Locate the config file dynamically
+sys.path.insert(0, os.getcwd())
+
 from naoqi import ALProxy
+from config import *
 
-IP = '192.168.0.122'
 
-motionProxy = ALProxy("ALMotion", IP, 9559)
+motionProxy = ALProxy("ALMotion", IP, PORT)
 motionProxy.rest()

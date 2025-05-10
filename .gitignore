@@ -8,3 +8,4 @@
 /client/vision_definitions.py
 
 *.pyc
+.DS_Store

@@ -2,7 +2,7 @@
 This module is used to track initialised ALProxy instances from naoqi.
 """
 
-from naoqi import ALProxy, ALBroker, ALModule
+from naoqi import ALProxy, ALBroker
 import types
 
 
@@ -31,8 +31,19 @@ class ProxyService:
     
     def handle_proxy_command(self, module_name, method, ip, port, args):
         proxy = self.get_proxy(module_name=module_name, ip=ip, port=port)
-        # Execute the requested method         
-        return getattr(proxy, method)(*args)
+        # handle nested methods
+        method_parts = method.split('.')
+        current_obj = proxy
+        
+        # traverse nested attributes
+        for part in method_parts[:-1]:
+            current_obj = getattr(current_obj, part)
+        
+        # call final method
+        final_method = method_parts[-1]
+
+        # execute the final requested method         
+        return getattr(current_obj, final_method)(*args)
     
     def handle_broker_command(self, method, ip, port, broker_name, parent_ip, parent_port, args):
         """

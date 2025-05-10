@@ -10,19 +10,30 @@ class ALProxyWrapper:
         self.ip = ip
         self.port = port
 
-    def __getattr__(self, method):
-        def wrapper(*args):
-            command = {
-                'module': self.module,
-                'method': method,
-                'args': args,
-                'ip': self.ip,
-                'port': self.port
-            }
-            
-            print(f'COMMAND: \n{command}\n\n')
-            return send_request(command)
-        return wrapper
+    def __getattr__(self, name):
+        return SubProxy(self, name)
+    
+    
+class SubProxy:
+    def __init__(self, parent, path):
+        self.parent = parent
+        self.path = path
+
+    def __getattr__(self, name):
+        # extend the method path when accessing attributes
+        return SubProxy(self.parent, f"{self.path}.{name}")
+
+    def __call__(self, *args):
+        # final method call with full path
+        command = {
+            'module': self.parent.module,
+            'method': self.path,
+            'args': args,
+            'ip': self.parent.ip,
+            'port': self.parent.port
+        }
+        # print(f'COMMAND: \n{command}\n\n')
+        return send_request(command)
     
 
 class ALBrokerWrapper:
@@ -46,7 +57,7 @@ class ALBrokerWrapper:
                 'parent_port': self.parent_port
             }
             
-            print(f'COMMAND: \n{command}\n\n')
+            # print(f'COMMAND: \n{command}\n\n')
             return send_request(command)
         return wrapper
     
