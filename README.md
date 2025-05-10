@@ -1,22 +1,21 @@
-# NAOqi Python 2 to Python 3 Bridge
+# NAOqi3
 
-This project provides a Python 3-compatible wrapper for the NAOqi SDK, originally available only in Python 2. With this bridge, you can write code that communicates with NAO robots in Python 3, using the same syntax as NAOqi's original Python 2 library.
+This project introduces a **NAOqi3** - Python 3-compatible wrapper for the NAOqi SDK, originally available only in Python 2. With this bridge, you can write code that communicates with NAO robots in Python 3, using the same syntax as NAOqi's original Python 2 library.
+
+This interface will work with the current library to ensure full functionality of this library with modern versions of Python.
+
+**The main goal of developing this interface is to be able to use the NAOqi library with modern tools** - image processing libraries, AI and ML tools etc. that are in Python version 3 and above.
 
 ## Table of Contents
 
 1. [Project Structure](#project-structure)
 2. [Compatibility](#compatibility)
-3. [Main Components](#main-components)
-4. [Instalation guide](#instalation-guide)
+3. [Technical Details](#technical-details)
+4. [Installation guide](#installation-guide)
    1. [Step 1: Install Python 3 if not installed](#step-1-install-python-3-if-not-installed)
    2. [Step 2: Install Python 2.7.18 required](#step-2-install-python-2718-required)
    3. [Step 3: install NAOqi SDK 2.1.4 and add it to Python global dependencies required](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
    4. [Step 4: Setup first project and install NAOqi3 required](#step-4-setup-first-project-and-install-naoqi3-required)
-5. [Technical Details](#technical-details)
-   1. [Server Python 2](#server-python-2)
-   2. [Client Python 3](#client-python-3)
-   3. [Communication Protocol](#communication-protocol)
-
 
 ## Project Structure
 ```shell
@@ -38,27 +37,27 @@ project_root/
 ```
 
 ## Compatibility
-This table shows with which Nao and NAOqi SDK this bridge interface is compatible.
-| Nao version | NAOqi SDK version | Compatible |
+This table shows with which NAO and NAOqi SDK this bridge interface is compatible.
+| NAO version | NAOqi SDK version | Compatible |
 |-------------|-------------------|------------|
-| Nao V4      | *NAOqi* 2.1.4     |     ✅     |
-| Nao V5      | *NAOqi* 2.1.4     |     ✅     |
-| Nao V6      | *NAOqi* 2.8.6+    |     ✅     |
+| NAO V4      | *NAOqi* 2.1.4     |     ✅     |
+| NAO V5      | *NAOqi* 2.1.4     |     ✅     |
+| NAO V6      | *NAOqi* 2.8.6+    |     ✅     |
 
 
-## Main Components
+## Technical Details
+This project consists of two components:
+- **NAOqi3** (code in this repo),
+- **NAOqi SDK** (original library that must be installed separately).
 
-- **server/naoqi_server.py** (Python 2): A server that listens for commands, executes them using the NAOqi SDK, and returns the results.
-- **client/naoqi3.py** (Python 3): Provides an `ALProxy` class that emulates the NAOqi syntax, forwarding commands to `naoqi_client.py`.
-- **client/naoqi_client.py** (Python 3): A client that communicates with the Python 2 server, handling command transmission and result retrieval.
+The whole project is written in Python 3.11.0 and primarly designed for NAOqi SDK version 2.1.4 (for NAO robots versions 4 and 5).
 
-## Instalation guide
+## Installation guide
 **STEPS:**
-1. Python 3.11.0 installation (or any other versions you would like)
-2. Python 2.7.18 installation (required for NAOqi SDK)
-3. NAOqi SDK instalation
-4. Setup first project and install NAOqi3
-5. Running first program
+1. [Python 3.11.0 installation](#step-1-install-python-3-if-not-installed) (or any other versions you would like)
+2. [Python 2.7.18 installation](#step-2-install-python-2718-required) (required for NAOqi SDK)
+3. [NAOqi SDK instalation](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
+4. [Setup first project and install NAOqi3](#step-4-setup-first-project-and-install-naoqi3-required) (TODO: improve this section)
 
 ### Step 1: Install Python 3 (if not installed)
 _This step is required if you don't have Python 3 installed on your system. If you already have Python 3, you can skip this step._
@@ -152,12 +151,4 @@ This part will describe how to create new project in PyCharm, clone NAOqi3 from 
 
 After successfully installing and launching NAOqi3, you can remove all `examples\` folders (both in `server\` and `client\`) or leave it for inspiration. All files you actually require are: `client\naoqi_client.py`, `client\fetch_naoqi_constants.py`, `client\config.py` (to have NAO configs stored), `client\naoqi3.py`, `server\naoqi_server.py`, `server\proxy_service.py`.
 
-## Technical Details
-### Server (Python 2):
-Listens on a specified port for incoming commands from the client.
-Deserializes the received command, executes it using NAOqi, and returns the result.
-### Client (Python 3):
-Provides ALProxy via naoqi3.py that mirrors the Python 2 NAOqi API.
-Forwards all method calls to naoqi_client.py, which serializes and sends commands to the server.
-### Communication Protocol:
-The client and server communicate using sockets, with commands and responses serialized using pickle to handle complex data.
+## FAQ
