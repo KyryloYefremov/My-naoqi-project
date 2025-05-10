@@ -16,6 +16,7 @@ This interface will work with the current library to ensure full functionality o
    2. [Step 2: Install Python 2.7.18 required](#step-2-install-python-2718-required)
    3. [Step 3: install NAOqi SDK 2.1.4 and add it to Python global dependencies required](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
    4. [Step 4: Setup first project and install NAOqi3 required](#step-4-setup-first-project-and-install-naoqi3-required)
+5. [FAQ](#faq)
 
 ## Project Structure
 ```shell
@@ -153,4 +154,8 @@ After successfully installing and launching NAOqi3, you can remove all `examples
 
 ## FAQ
 **_I have already installed Python 3.9, will NAOqi3 work with this version?_** <br>
-Yes, the NAOqi3 will work on any Python 3 version, but if you want to use existing examples from this repository (for example `final-program\`), consider using the same Python version (3.11.0) that was used for developing this program.
+Yes, the NAOqi3 will work on any Python 3 version, but if you want to use existing examples from this repository (for example `final-program\`), consider using the same Python version (3.11.0) that was used for developing this program. <br>
+
+**_I don't have a git system installed, what should I do?_** <br>
+If you don't have a git system installed on your PC, follow this [official webpage tutorial](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), find a section "Install git on Windows" and follow all its steps.
+
