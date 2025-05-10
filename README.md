@@ -8,34 +8,21 @@ This interface will work with the current library to ensure full functionality o
 
 ## Table of Contents
 
+## Table of Contents
+
 1. [Project Structure](#project-structure)
 2. [Compatibility](#compatibility)
 3. [Technical Details](#technical-details)
 4. [Installation guide](#installation-guide)
-   1. [Step 1: Install Python 3 if not installed](#step-1-install-python-3-if-not-installed)
-   2. [Step 2: Install Python 2.7.18 required](#step-2-install-python-2718-required)
-   3. [Step 3: install NAOqi SDK 2.1.4 and add it to Python global dependencies required](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
-   4. [Step 4: Setup first project and install NAOqi3 required](#step-4-setup-first-project-and-install-naoqi3-required)
-5. [FAQ](#faq)
+   1. [Step 1: Install Python 3 (if not installed)](#step-1-install-python-3-if-not-installed)
+   2. [Step 2: Install Python 2.7.18 (required)](#step-2-install-python-2718-required)
+   3. [Step 3: Install NAOqi SDK 2.1.4 and add it to Python global dependencies (required)](#step-3-install-naoqi-sdk-214-and-add-it-to-python-global-dependencies-required)
+   4. [Step 4: Setup first project and install NAOqi3 (required)](#step-4-setup-first-project-and-install-naoqi3-required)
+5. [How to use it?](#how-to-use-it)
+6. [Functionality description](#functionality-description)
+7. [FAQ](#faq)
 
-## Project Structure
-```shell
-project_root/
-├── server/                         # Server-side code (Python 2)
-│   ├── examples/                   # Directory with test programs
-│   ├── config.py                   # Congifuration file: IP, PORT for Nao
-│   ├── naoqi_server.py             # Server to execute NAOqi commands
-│   ├── proxy_service.py            # File to cache proxies
-│   ├── fetch_naoqi_constants.py    # Runable file to import all NAOqi constants
-│
-├── client/                         # Client-side code (Python 3)
-│   ├── examples/                   # Directory with test programs
-│   ├── naoqi3.py                   # Wrapper to emulate NAOqi in Python 3
-│   ├── naoqi_client.py             # Client to communicate with Python 2 server
-│   ├── config.py                   # Congifuration file: IP, PORT for Nao
-│
-└── README.md                       # Project documentation
-```
+
 
 ## Compatibility
 This table shows with which NAO and NAOqi SDK this bridge interface is compatible.
@@ -151,6 +138,61 @@ This part will describe how to create new project in PyCharm, clone NAOqi3 from 
 **❗️❗️❗️ Important information ❗️❗️❗️**
 
 After successfully installing and launching NAOqi3, you can remove all `examples\` folders (both in `server\` and `client\`) or leave it for inspiration. All files you actually require are: `client\naoqi_client.py`, `client\fetch_naoqi_constants.py`, `client\config.py` (to have NAO configs stored), `client\naoqi3.py`, `server\naoqi_server.py`, `server\proxy_service.py`.
+
+## How to use it?
+
+You will be working with `naoqi3.py` file from `client\` folder. This module is an absolute simulator of NAOqi SDk. It means that you should behaive with it in the same way as with original NAOqi library. <br>
+
+**For example**: if you write a code to make a NAO robot say `"Hello World!"`, in original NAOqi library it will look like this:
+```Python
+from naoqi import ALProxy
+tts = ALProxy("ALTextToSpeech", IP, PORT)
+tts.setLanguage("English")
+tts.say("Hello World!")
+```
+In NAOqi3 it will look almost the same:
+```Python
+from naoqi3 import ALProxy
+tts = ALProxy("ALTextToSpeech", IP, PORT)
+tts.setLanguage("English")
+tts.say("Hello World!")
+```
+
+### Working the NAOqi3
+
+1. To start the NAOqi3 application, you firstlly need to run the server `naoqi_server.py`. Just open a terminal in `server\` folder and run: `python naoqi_server.py`.
+2. After the server was started, you can run any of your code in normal way. <br>
+❗️ **Notice**: Place all your python files that you want to run with NAOqi3 inside `client\` folder!
+3. For example create a file `test.py`, add some Python 3 code inside it (for instance the code from the example above, but change `IP` and `PORT` to your values) and save this file to `client\` folder. Then open a terminal in the same folder and run: `python test.py`. <br>
+
+**In such simple way you can run any Python 3 program you want!**
+
+## Functionality description
+
+### Project Structure
+```shell
+project_root/
+├── server/                         # Server-side code (Python 2)
+│   ├── examples/                   # Directory with test programs
+│   ├── config.py                   # Congifuration file: IP, PORT for Nao
+│   ├── naoqi_server.py             # Server to execute NAOqi commands
+│   ├── proxy_service.py            # File to cache proxies
+│   ├── fetch_naoqi_constants.py    # Runable file to import all NAOqi constants
+│
+├── client/                         # Client-side code (Python 3)
+│   ├── examples/                   # Directory with test programs
+│   ├── naoqi3.py                   # Wrapper to emulate NAOqi in Python 3
+│   ├── naoqi_client.py             # Client to communicate with Python 2 server
+│   ├── config.py                   # Congifuration file: IP, PORT for Nao
+│
+└── README.md                       # Project documentation
+```
+
+### Server part
+The server part of the system represents the communication element between the client and the original library NAOqi. The main task of the server is to receive requests from NAOqi3, perform the appropriate operations on NAOqi SDK objects and returning the results of these operations back to to the client side. Due to the need for direct communication and cooperation with the library NAOqi, the entire server subsystem is built in Python 2. Server part consists of two components: the file `naoqi_server.py` and the file `proxy_servis.py`.
+
+### Client part
+The client part of the system serves as an interface between the Python 3 environment and the original library NAOqi, which runs in Python 2. Its main task is to send requests to the server and simulate the interface known from the NAOqi API. The entire client side is implemented is implemented in Python 3 and consists of three modules: `naoqi3.py`, `naoqi_client.py` and `fetch_naoqi_constants.py`.
 
 ## FAQ
 **_I have already installed Python 3.9, will NAOqi3 work with this version?_** <br>
