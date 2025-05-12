@@ -8,8 +8,6 @@ This interface will work with the current library to ensure full functionality o
 
 ## Table of Contents
 
-## Table of Contents
-
 1. [Project Structure](#project-structure)
 2. [Compatibility](#compatibility)
 3. [Technical Details](#technical-details)
@@ -87,7 +85,7 @@ Install location can be leaved as default. Click "Install".
 <img alt="01_install_python2718" src="https://github.com/user-attachments/assets/04c9ba70-1fef-4307-9388-d4b0027be4ed" />  <br>
 4. Select the option: "Install for all users" and click "Next".  <br>
 <img alt="02_install_python2718" src="https://github.com/user-attachments/assets/37049bbb-575e-4be4-9d81-a629019d3e89" />  <br>
-5. Change installation location from `C:\Python27` to `C:\Program Files\Python27` and click "Next".  <br>
+5. Change installation location, if you want, for example from `C:\Python27` to `C:\Program Files\Python27` and click "Next".  <br>
 <img alt="03_install_python2718" src="https://github.com/user-attachments/assets/b1529642-6180-43f6-bbc3-70608a648c39" /> <br>
 <img alt="04_install_python2718" src="https://github.com/user-attachments/assets/5434300f-f556-4adb-898f-e2e07d440cec" /> <br>
 6. Here hust click "Next".  <br>
@@ -122,18 +120,24 @@ Install location can be leaved as default. Click "Install".
 
 ### Step 4: Setup first project and install NAOqi3 (required)
 _For this part you need to have a git system installed on your computer._ <br>
-_Also you need to have a Python IDE installed on your computer (for example PyCharm)._ <br>
+_Also you need to have a Python IDE installed on your computer (for example VSCode)._ <br>
 
-This part will describe how to create new project in PyCharm, clone NAOqi3 from this repository and setup all required settings.
+This part will describe how to create new project in VSCode, clone NAOqi3 from this repository and setup all required settings.
 
-1. Create a new PyCharm project.
-2. Open ternimal and clone the NAOqi3 from this repository: `git clone https://github.com/KyryloYefremov/My-naoqi-project`.
-3. Navigate to `.\My-naoqi-project\server` folder, then create a new virtual environment with Python 2.7.18 and activate it.
-4. Open another terminal window, navigate to `.\My-naoqi-project\client` folder, then create a new virtual environment with Python 3.11.0 and activate it.
-5. Then you will be having two terminals: one opened at `.\My-naoqi-project\server` folder with activated virtual env. for Python 2 and second opened at `.\My-naoqi-project\client` folder with activated virtual env. for Python 3.
-6. To try to run a Python 3 program on NAOqi3, navigate to `.\My-naoqi-project\client\config.py` and uncommit or create NAO IP address and NAO port.
-7. Then run `naoqi_server.py` in Python 2 terminal running this command: `python naiqi_server.py`.
-8. After this you can try to run any Python 3 test example from folder `client\examples`. Try to run in Python 3 terminal for example: `python .\examples\core\test_say_hello.py`.
+1. Install VSCode (if not installed) following this [official manual](https://code.visualstudio.com/docs/setup/windows#_install-vs-code-on-windows).
+2. After successfully installing the VSCode, launch it. <br>
+<img alt="01_launch_vscode" src="" />  <br>
+4. Create a new project by clicking on "Open folder": <br>
+<img alt="02_open_folder_vscode" src="" />  <br>
+5. Go to any folder you like or create a new one and then ...
+<img alt="02_open_folder_vscode" src="" />  <br>
+7. Open terminal and clone the NAOqi3 from this repository: `git clone https://github.com/KyryloYefremov/My-naoqi-project`.
+8. Navigate to `.\My-naoqi-project\server` folder, then create a new virtual environment with Python 2.7.18 and activate it.
+9. Open another terminal window, navigate to `.\My-naoqi-project\client` folder, then create a new virtual environment with Python 3.11.0 and activate it.
+10. Then you will be having two terminals: one opened at `.\My-naoqi-project\server` folder with activated virtual env. for Python 2 and second opened at `.\My-naoqi-project\client` folder with activated virtual env. for Python 3.
+11. To try to run a Python 3 program on NAOqi3, navigate to `.\My-naoqi-project\client\config.py` and uncommit or create NAO IP address and NAO port.
+12. Then run `naoqi_server.py` in Python 2 terminal running this command: `python naiqi_server.py`.
+13. After this you can try to run any Python 3 test example from folder `client\examples`. Try to run in Python 3 terminal for example: `python .\examples\core\test_say_hello.py`.
 
 **❗️❗️❗️ Important information ❗️❗️❗️**
 
