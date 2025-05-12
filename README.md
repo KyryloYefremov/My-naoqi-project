@@ -46,7 +46,8 @@ The whole project is written in Python 3.11.0 and primarly designed for NAOqi SD
 4. [Setup first project and install NAOqi3](#step-4-setup-first-project-and-install-naoqi3-required) (TODO: improve this section)
 
 ### Step 1: Install Python 3 (if not installed)
-_This step is required if you don't have Python 3 installed on your system. If you already have Python 3, you can skip this step._
+_This step is required if you don't have Python 3 installed on your system. If you already have Python 3, you can skip this step._<br>
+In case of any problems, visit [FAQ](#faq) section. <br>
 
 1. Go to [official Python website](https://www.python.org/downloads/release/python-3110/) to download Python 3.11.0.
 2. Scroll to the very end of the page and you will see different installers.
@@ -77,6 +78,7 @@ Install location can be leaved as default. Click "Install".
 **You have successfully installed Python 3 on your computer!**
 
 ### Step 2: Install Python 2.7.18 (required)
+In case of any problems, visit [FAQ](#faq) section. <br>
 
 1. First, go to this [official link](https://www.python.org/downloads/release/python-2718/) to install exactly Python 2.7.18 32-bit edition.
 2. Scroll down and click on this installer: **Windows x86 MSI installer**  
@@ -98,6 +100,8 @@ Install location can be leaved as default. Click "Install".
 **You have successfully installed Python 2.7.18 on your computer!**
 
 ### Step 3: install NAOqi SDK 2.1.4 and add it to Python global dependencies (required)
+In case of any problems, visit [FAQ](#faq) section. <br>
+
 1. Firstlly, install NAOqi SDK from this repository by clicking on this link [pynaoqi.rar](pynaoqi.rar) and clicking on an install icon. <br>
 <img width="1096" alt="install_rar" src="https://github.com/user-attachments/assets/04311ba5-5ec0-421d-80df-892bb33b058a" />  <br>
 2. After the installation is complete, extract the archive. After the extraction you should see a folder `📁 pynaoqi`.
@@ -121,6 +125,7 @@ Install location can be leaved as default. Click "Install".
 ### Step 4: Setup first project and install NAOqi3 (required)
 _For this part you need to have a git system installed on your computer._ <br>
 _Also you need to have a Python IDE installed on your computer (for example VSCode)._ <br>
+In case of any problems, visit [FAQ](#faq) section. <br>
 
 This part will describe how to create new project in VSCode, clone NAOqi3 from this repository and setup all required settings.
 
