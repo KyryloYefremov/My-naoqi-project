@@ -131,13 +131,23 @@ This part will describe how to create new project in VSCode, clone NAOqi3 from t
 <img alt="02_open_folder_vscode" src="" />  <br>
 5. Go to any folder you like or create a new one and then ...
 <img alt="02_open_folder_vscode" src="" />  <br>
-7. Open terminal and clone the NAOqi3 from this repository: `git clone https://github.com/KyryloYefremov/My-naoqi-project`.
-8. Navigate to `.\My-naoqi-project\server` folder, then create a new virtual environment with Python 2.7.18 and activate it.
-9. Open another terminal window, navigate to `.\My-naoqi-project\client` folder, then create a new virtual environment with Python 3.11.0 and activate it.
-10. Then you will be having two terminals: one opened at `.\My-naoqi-project\server` folder with activated virtual env. for Python 2 and second opened at `.\My-naoqi-project\client` folder with activated virtual env. for Python 3.
-11. To try to run a Python 3 program on NAOqi3, navigate to `.\My-naoqi-project\client\config.py` and uncommit or create NAO IP address and NAO port.
-12. Then run `naoqi_server.py` in Python 2 terminal running this command: `python naiqi_server.py`.
-13. After this you can try to run any Python 3 test example from folder `client\examples`. Try to run in Python 3 terminal for example: `python .\examples\core\test_say_hello.py`.
+7. Open terminal by clicking on this icon:
+8. Then clone the NAOqi3 from the remote repository by typing this command into the terminal: `git clone https://github.com/KyryloYefremov/My-naoqi-project`.
+9. After successful cloning the repository, you will se new folder `My-naoqi-project`.
+10. Then in terminal navigate to `.\My-naoqi-project\client` folder using this command `cd .\My-naoqi-project\client`. <br>
+11. Create a new virtual environment from Python 3: `<your-path-to-python3-folder>\python.exe -m venv .venv3` (based on this tutorial installation: `C:\Program Files\Python311\python.exe -m venv .venv3`) <br>
+12. Then activate it: `.\.venv3\Scripts\activate`. <br>
+13. Now you need to setup a Python 2 virtual environment. Open the second terminal:<br>
+14. Go to `.\My-naoqi-project\server` folder using this command `cd ..\client`. <br>
+15. Create a new virtual environment from Python 2: `<your-path-to-python2-folder>\python.exe -m virtualenv .venv2` (based on this tutorial installation: `C:\Program Files\Python27\python.exe -m virtualenv .venv2`) <br>
+16. Then activate it: `.\.venv2\Scripts\activate`. <br>
+12. So you will be having two terminals: one opened at `.\My-naoqi-project\server` folder with activated virtual env. for Python 2 and second opened at `.\My-naoqi-project\client` folder with activated virtual env. for Python 3.
+13. To try to run a Python 3 program on NAOqi3, navigate to `.\My-naoqi-project\client\config.py` and uncommit or create NAO IP address and NAO port.
+14. Then run `naoqi_server.py` in Python 2 terminal running this command: `python naoqi_server.py`. If everything is OK, you will se this output: <br>
+15. After this you can try to run any Python 3 test example from folder `client\examples`. Try to run in Python 3 terminal for example: `python .\examples\core\test_say_hello.py`.
+
+**You have successfully installed NAOqi3 and setup your project!**
+
 
 **❗️❗️❗️ Important information ❗️❗️❗️**
 
