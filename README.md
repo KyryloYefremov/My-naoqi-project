@@ -156,7 +156,7 @@ This part will describe how to create new project in VSCode, clone NAOqi3 from t
 
 **❗️❗️❗️ Important information ❗️❗️❗️**
 
-After successfully installing and launching NAOqi3, you can remove all `examples\` folders (both in `server\` and `client\`) or leave it for inspiration. All files you actually require are: `client\naoqi_client.py`, `client\fetch_naoqi_constants.py`, `client\config.py` (to have NAO configs stored), `client\naoqi3.py`, `server\naoqi_server.py`, `server\proxy_service.py`.
+After successfully installing and launching NAOqi3, you can remove all `examples\` folders (both in `server\` and `client\`) or leave it for inspiration. Also delete the `pynaoqi.rar`, because we don't need it anymore. All files you actually require are: `client\naoqi_client.py`, `client\fetch_naoqi_constants.py`, `client\config.py` (to have NAO configs stored), `client\naoqi3.py`, `server\naoqi_server.py`, `server\proxy_service.py`.
 
 ## How to use it?
 
@@ -176,6 +176,8 @@ tts = ALProxy("ALTextToSpeech", IP, PORT)
 tts.setLanguage("English")
 tts.say("Hello World!")
 ```
+
+To create other programs for NAO you can look at [`examples\`](client/examples) folder or study the [official NAOqi SDK documentation](http://doc.aldebaran.com/2-1/dev/python/index.html).
 
 ### Working the NAOqi3
 
