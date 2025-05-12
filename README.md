@@ -126,17 +126,17 @@ This part will describe how to create new project in VSCode, clone NAOqi3 from t
 
 1. Install VSCode (if not installed) following this [official manual](https://code.visualstudio.com/docs/setup/windows#_install-vs-code-on-windows).
 2. After successfully installing the VSCode, launch it. <br>
-<img alt="01_launch_vscode" src="https://github.com/user-attachments/assets/ea7e7845-4e08-4c83-923a-6c8fbc74acf1" />  <br>
+<img alt="01_launch_vscode" width="75%" src="https://github.com/user-attachments/assets/ea7e7845-4e08-4c83-923a-6c8fbc74acf1" />  <br>
 3. Create a new project by clicking on "Open folder": <br>
-<img alt="02_open_folder_vscode" src="https://github.com/user-attachments/assets/909db633-500b-494c-a740-e3976987888d" />  <br>
+<img alt="02_open_folder_vscode" width="75%" src="https://github.com/user-attachments/assets/909db633-500b-494c-a740-e3976987888d" />  <br>
 4. The File Explorer will be opened. Go to any folder you like or create a new one and then click "Select Folder". <br>
 <img alt="03_create_folder_vscode" src="https://github.com/user-attachments/assets/9ae51159-9781-4282-9e9a-8fa8ecb5df72" />  <br>
 5. You opened an empty VSCode project, then click on the icon that is illustrated on a screenshot to open a terminal: <br>
-<img alt="04_open_terminal" src="https://github.com/user-attachments/assets/076208ca-160b-4a61-b14d-9191557c42bf" />  <br>
+<img alt="04_open_terminal" width="75%" src="https://github.com/user-attachments/assets/076208ca-160b-4a61-b14d-9191557c42bf" />  <br>
 8. Then clone the NAOqi3 from the remote repository by typing this command into the terminal: `git clone https://github.com/KyryloYefremov/My-naoqi-project` as is shown on the screenshot: <br>
-<img alt="05_clone_vscode" src="https://github.com/user-attachments/assets/0cb47cb2-bee7-4bb0-95ff-9606a68da38c" />  <br>
+<img alt="05_clone_vscode" width="75%" src="https://github.com/user-attachments/assets/0cb47cb2-bee7-4bb0-95ff-9606a68da38c" />  <br>
 9. After successful cloning the repository, you will se new folder `My-naoqi-project`.
-<img alt="06_cloned_vscode" src="https://github.com/user-attachments/assets/5183058d-eb0d-4f99-ba11-e807d8aaefd1" />  <br>
+<img alt="06_cloned_vscode" width="75%" src="https://github.com/user-attachments/assets/5183058d-eb0d-4f99-ba11-e807d8aaefd1" />  <br>
 10. Then in the opened terminal navigate to `.\My-naoqi-project\client` folder using this command `cd .\My-naoqi-project\client`. <br>
 11. Next create a new virtual environment from Python 3 using a command: `<your-path-to-python3-folder>\python.exe -m venv .venv3` (if you used the same pathes as were used in this tutorial, just paste this: `C:\Program Files\Python311\python.exe -m venv .venv3`) <br>
 12. Then activate it: `.\.venv3\Scripts\activate`. <br>
