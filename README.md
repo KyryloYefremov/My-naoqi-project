@@ -227,9 +227,38 @@ The server part of the system represents the communication element between the c
 The client part of the system serves as an interface between the Python 3 environment and the original library NAOqi, which runs in Python 2. Its main task is to send requests to the server and simulate the interface known from the NAOqi API. The entire client side is implemented is implemented in Python 3 and consists of three modules: `naoqi3.py`, `naoqi_client.py` and `fetch_naoqi_constants.py`.
 
 ## FAQ
-**_I have already installed Python 3.9, will NAOqi3 work with this version?_** <br>
+**_I have already installed another version of Python, will NAOqi3 work with it?_** <br>
 Yes, the NAOqi3 will work on any Python 3 version, but if you want to use existing examples from this repository (for example `final-program\`), consider using the same Python version (3.11.0) that was used for developing this program. <br>
-
+<br>
+<br>
+**_Where can I find information about my PC system architecture?_** <br>
+You can find your PC system architecture in "Settings"->"System" find a frame "Device Specifications" and find a raw "System type". <br>
+<br>
+<br>
+**_While running `python --version` I get error "python is not recognised as an internal or external command..."_** <br>
+It means that your Python wasn't added to PATH variable during the installation process or the Python wasn't installed correctly. Try to find a solution with this [link](https://stackoverflow.com/questions/17953124/python-is-not-recognized-as-an-internal-or-external-command). Or try to reinstall Python following step-by-step the provided tutorial. <br>
+<br>
+<br>
 **_I don't have a git system installed, what should I do?_** <br>
-If you don't have a git system installed on your PC, follow this [official webpage tutorial](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), find a section "Install git on Windows" and follow all its steps.
+If you don't have a git system installed on your PC, follow this [official webpage tutorial](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), find a section "Install git on Windows" and follow all its steps. <br>
+<br>
+<br>
+**_I get an error while trying to clone the remote repository. How to fix it?_** <br>
+If you are getting an error while cloning the remote repository, firstly, check if your internet connection is working. If yes, visit the [GitHub Troubleshooting page](https://docs.github.com/en/repositories/creating-and-managing-repositories/troubleshooting-cloning-errors). <br>
+<br>
+<br>
+**_I get an error while running `naoqi_server.py`, how to fix it?_** <br>
+Check if you have activated your `.venv2` virtual environment. In the opened terminal you should see `(.venv2)` in the beginning of the command line.<br>
+<br>
+<br>
+**_I get an error while running Python 3 programs on NAOqi, how to fix it?_** <br>
+1. If you have an error `Exception: ALBroker::createBroker, Cannot connect to tcp://...`, check the `client\config.py` if you have correct IP and PORT for your NAO robot. Also check the LAN connection to the robot.
+2. If you have an import Error `ImportError: No module named naoqi`, visit the [Aldebaran Troubleshooting webpage](http://doc.aldebaran.com/2-5/dev/python/tips-and-tricks.html) and find the solution based on your case.
+<br>
+<br>
+
+
+
+
+
 
